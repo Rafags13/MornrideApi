@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MornrideApi.Domain.Entities.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace MornrideApi.Data.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Bike>();
             base.OnModelCreating(builder);
         }
     }
