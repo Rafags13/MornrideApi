@@ -1,7 +1,15 @@
 using Arch.EntityFrameworkCore.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using MornrideApi.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
+
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<DataContext>(option =>
+{
+    option.UseSqlServer(connectionString);
+});
 
 // Add services to the container.
 
