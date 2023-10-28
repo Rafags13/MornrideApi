@@ -25,15 +25,24 @@ namespace MornrideApi.Domain.Entities.Model
         [Required]
         public int Stock { get; set; }
 
-        //public List<string> AvaliableColors { get;set; } = new List<string>();
-        // the avaliable colors will be implemented when the bikeImages table
-        // is created
-
         [Required]
         public float Price { get; set; }
 
-        //public List<string> Categories { get; set; } = new List<string>();
-        // the categories will be implemented when the Categories table
-        // is created
+        public ICollection<BikeCategory> BikeCategories { get; set; }
+        public ICollection <Images> BikeImages { get; set; }
+
+        [NotMapped]
+        public List<string> AvaliableColors
+        {
+            get
+            {
+                return AvaliableColors;
+            }
+            set
+            {
+                var avaliableColors = BikeImages.Select(x => x.HexColor).ToList();
+                AvaliableColors = avaliableColors ?? new List<string>();
+            }
+        }
     }
 }

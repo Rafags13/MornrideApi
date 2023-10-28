@@ -10,12 +10,10 @@ namespace MornrideApi.Data.Context
 {
     public class DataContext : DbContext
     {
+        public DbSet<Bike> Bikes { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<BikeCategory> BikesCategories { get; set; }
+        public DbSet<Images> BikeImages{ get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.Entity<Bike>();
-            base.OnModelCreating(builder);
-        }
     }
 }

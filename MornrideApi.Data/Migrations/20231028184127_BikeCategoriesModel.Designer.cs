@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MornrideApi.Data.Context;
 
@@ -11,9 +12,10 @@ using MornrideApi.Data.Context;
 namespace MornrideApi.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231028184127_BikeCategoriesModel")]
+    partial class BikeCategoriesModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,45 +99,6 @@ namespace MornrideApi.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("MornrideApi.Domain.Entities.Model.Images", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("BackWheel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BikeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FrontBike")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FrontWheel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullBike")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HexColor")
-                        .IsRequired()
-                        .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BikeId");
-
-                    b.ToTable("BikeImages");
-                });
-
             modelBuilder.Entity("MornrideApi.Domain.Entities.Model.BikeCategory", b =>
                 {
                     b.HasOne("MornrideApi.Domain.Entities.Model.Bike", "Bike")
@@ -155,22 +118,9 @@ namespace MornrideApi.Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("MornrideApi.Domain.Entities.Model.Images", b =>
-                {
-                    b.HasOne("MornrideApi.Domain.Entities.Model.Bike", "BikeFromThisImage")
-                        .WithMany("BikeImages")
-                        .HasForeignKey("BikeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BikeFromThisImage");
-                });
-
             modelBuilder.Entity("MornrideApi.Domain.Entities.Model.Bike", b =>
                 {
                     b.Navigation("BikeCategories");
-
-                    b.Navigation("BikeImages");
                 });
 
             modelBuilder.Entity("MornrideApi.Domain.Entities.Model.Category", b =>
