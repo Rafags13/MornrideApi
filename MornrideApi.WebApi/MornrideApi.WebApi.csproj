@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MornrideApi.Application\MornrideApi.Application.csproj" />
     <ProjectReference Include="..\MornrideApi.Data\MornrideApi.Data.csproj" />
   </ItemGroup>
 

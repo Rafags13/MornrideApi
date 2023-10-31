@@ -13,7 +13,7 @@ namespace MornrideApi.Data.Context
         public DbSet<Bike> Bikes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<BikeCategory> BikesCategories { get; set; }
-        public DbSet<Images> BikeImages{ get; set; }
+        public DbSet<Image> BikeImages{ get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
     }
 }

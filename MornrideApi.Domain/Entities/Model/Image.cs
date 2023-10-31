@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MornrideApi.Domain.Entities.Model
 {
-    public class Images
+    public class Image
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -32,6 +32,6 @@ namespace MornrideApi.Domain.Entities.Model
 
         [ForeignKey("BikeId")]
         public int BikeId { get; set; }
-        public Bike BikeFromThisImage { get; set; }
+        public Bike? BikeFromThisImage { get; set; }
     }
 }

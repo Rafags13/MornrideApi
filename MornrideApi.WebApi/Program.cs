@@ -1,5 +1,7 @@
 using Arch.EntityFrameworkCore.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using MornrideApi.Application.Interfaces;
+using MornrideApi.Application.Services;
 using MornrideApi.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ builder.Services.AddDbContext<DataContext>(option =>
 
 // Add services to the container.
 
+
+builder.Services.AddScoped<ImgService, ImagesService>();
 builder.Services.AddUnitOfWork<DataContext>();
 
 builder.Services.AddControllers();
