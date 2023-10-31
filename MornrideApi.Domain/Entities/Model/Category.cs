@@ -22,6 +22,6 @@ namespace MornrideApi.Domain.Entities.Model
         [StringLength(150)]
         public string Description { get; set; }
 
-        public ICollection<BikeCategory> CategoryBikes { get; set;}
+        public ICollection<BikeCategory>? CategoryBikes { get; set;}
     }
 }

@@ -10,6 +10,16 @@ namespace MornrideApi.Domain.Entities.Model
 {
     public class Bike
     {
+        public Bike(string title, string description, int stock, float price)
+        {
+            this.Title = title;
+            this.Description = description;
+            this.Stock = stock;
+            this.Price = price;
+        }
+
+        public Bike() { }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -28,21 +38,21 @@ namespace MornrideApi.Domain.Entities.Model
         [Required]
         public float Price { get; set; }
 
-        public ICollection<BikeCategory> BikeCategories { get; set; }
-        public ICollection <Images> BikeImages { get; set; }
+        public ICollection<BikeCategory>? BikeCategories { get; set; }
+        public ICollection<Images>? BikeImages { get; set; }
 
+        
+        private List<string>? _avaliableColors;
         [NotMapped]
-        public List<string> AvaliableColors
+        public List<string>? AvaliableColors
         {
             get
             {
-                return AvaliableColors;
+                var avaliableColors = BikeImages?.Select(x => x.HexColor).ToList();
+                _avaliableColors = avaliableColors ?? new List<string>();
+                return _avaliableColors;
             }
-            set
-            {
-                var avaliableColors = BikeImages.Select(x => x.HexColor).ToList();
-                AvaliableColors = avaliableColors ?? new List<string>();
-            }
+            set => _avaliableColors = value;
         }
     }
 }
