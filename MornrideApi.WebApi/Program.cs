@@ -17,6 +17,7 @@ builder.Services.AddDbContext<DataContext>(option =>
 
 
 builder.Services.AddScoped<ImgService, ImagesService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddUnitOfWork<DataContext>();
 
 builder.Services.AddControllers();
