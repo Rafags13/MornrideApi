@@ -32,6 +32,6 @@ namespace MornrideApi.Domain.Entities.Model
 
         [ForeignKey("BikeId")]
         public int BikeId { get; set; }
-        public Bike? BikeFromThisImage { get; set; }
+        public virtual Bike? BikeFromThisImage { get; set; }
     }
 }

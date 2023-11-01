@@ -1,5 +1,6 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using MornrideApi.Application.Interfaces;
+using MornrideApi.Domain.Entities.Dto;
 using MornrideApi.Domain.Entities.Model;
 using System;
 using System.Collections.Generic;
@@ -17,19 +18,24 @@ namespace MornrideApi.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public bool AddCategory(Category category)
+        public async Task<bool> AddCategory(CreateCategoryDto category)
         {
-            return true;
+            var newCategory = new Category { Name = category.Name, Description = category.Description};
+            _unitOfWork.GetRepository<Category>().Insert(newCategory);
+            var sucess = await _unitOfWork.SaveChangesAsync() > 0;
+            return sucess;
         }
 
-        public List<Category> GetAll()
+        public async Task<List<Category>> GetAll()
         {
-            return new List<Category>();
+            var categories = await _unitOfWork.GetRepository<Category>().GetPagedListAsync();
+            return categories.Items.ToList();
         }
 
-        public Category GetById(int id)
+        public Category? GetById(int id)
         {
-            return new Category();
+            var category = _unitOfWork.GetRepository<Category>().GetFirstOrDefault(predicate: x => x.Id == id);
+            return category;
         }
     }
 }

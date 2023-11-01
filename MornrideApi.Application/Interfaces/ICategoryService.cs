@@ -1,4 +1,5 @@
-﻿using MornrideApi.Domain.Entities.Model;
+﻿using MornrideApi.Domain.Entities.Dto;
+using MornrideApi.Domain.Entities.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace MornrideApi.Application.Interfaces
 {
     public interface ICategoryService
     {
-        public List<Category> GetAll();
-        public Category GetById(int id);
-        public bool AddCategory(Category category);
+        public Task<List<Category>> GetAll();
+        public Category? GetById(int id);
+        public Task<bool> AddCategory(CreateCategoryDto category);
     }
 }
