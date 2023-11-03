@@ -12,22 +12,20 @@ namespace MornrideApi.Domain.Entities.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(7)]
         public string HexColor { get; set; } = string.Empty;
 
-        [Required]
         [Column(Order = 1)]
-        [ForeignKey("FullBikeImageId")]
-        public int IdFullBikeImage { get; set; }
-        public virtual Image? FullBikeImage { get; set; }
+        [ForeignKey("ImageId")]
+        public int ImageId { get; set; }
+        public Image? Image { get; set; }
 
-        [Required]
         [Column(Order = 2)]
         [ForeignKey("BikeId")]
         public int BikeId { get; set; }
-        public virtual Bike? Bike { get; set; }
+        public Bike? Bike { get; set; }
     }
 }

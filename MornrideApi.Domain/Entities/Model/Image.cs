@@ -15,5 +15,8 @@ namespace MornrideApi.Domain.Entities.Model
         [Required]
         [MaxLength(250)]
         public string Description { get; set; } = string.Empty;
+
+        public ICollection<BannerImage> Banners { get; set; }
+        public ICollection <BikeImage> BikeImages { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace MornrideApi.Domain.Entities.Model
         [ForeignKey("CategoryId")]
         public int CategoryId { get; set; }
 
-        public virtual Bike Bike { get; set; }
-        public virtual Category Category { get; set; }
+        public Bike Bike { get; set; }
+        public Category Category { get; set; }
     }
 }

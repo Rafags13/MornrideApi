@@ -22,7 +22,7 @@ namespace MornrideApi.Domain.Entities.Model
         [Column(Order = 1)]
         [ForeignKey("ImageId")]
         public int IdBannerImage { get; set; }
-        public virtual Image? ImageFrombanner { get; set; }
+        public Image? ImageFrombanner { get; set; }
 
     }
 }
