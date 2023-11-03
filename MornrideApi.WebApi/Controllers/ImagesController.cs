@@ -34,6 +34,26 @@ namespace MornrideApi.WebApi.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetImages()
+        {
+            try
+            {
+                var images = await _imageService.GetImages();
+
+                if(images.Count == 0 || images == null)
+                {
+                    return NotFound("Nenhuma imagem foi encontrada");
+                }
+
+                return Ok(images);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

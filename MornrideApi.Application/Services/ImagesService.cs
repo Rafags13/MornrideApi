@@ -2,11 +2,6 @@
 using MornrideApi.Application.Interfaces;
 using MornrideApi.Domain.Entities.Dto;
 using MornrideApi.Domain.Entities.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MornrideApi.Application.Services { 
     public class ImagesService : ImgService
@@ -31,6 +26,13 @@ namespace MornrideApi.Application.Services {
 
             _unitOfWork.GetRepository<Image>().Insert(newImageFromBike);
             return await _unitOfWork.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<Image>> GetImages()
+        {
+            var images = await _unitOfWork.GetRepository<Image>().GetPagedListAsync();
+
+            return images.Items.ToList();
         }
     }
 }
