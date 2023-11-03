@@ -16,7 +16,7 @@ namespace MornrideApi.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateImagesFromBike([FromBody] CreateImageDto image)
+        public async Task<IActionResult> CreateImagesFromBike([FromBody] Image image)
         {
             try
             {

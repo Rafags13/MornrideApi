@@ -12,19 +12,9 @@ namespace MornrideApi.Application.Services {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> UploadImage(CreateImageDto image)
+        public async Task<bool> UploadImage(Image image)
         {
-            var newImageFromBike = new Image {
-                HexColor = image.HexColor,
-                BackWheel = image.BackWheel, 
-                FrontBike = image.FrontBike,
-                FrontWheel = image.FrontWheel,
-                FullBike = image.FullBike,
-                BikeId = image.BikeId
-            
-            };
-
-            _unitOfWork.GetRepository<Image>().Insert(newImageFromBike);
+            _unitOfWork.GetRepository<Image>().Insert(image);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
 

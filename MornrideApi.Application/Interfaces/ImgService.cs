@@ -10,7 +10,7 @@ namespace MornrideApi.Application.Interfaces
 {
     public interface ImgService
     {
-        public Task<bool> UploadImage(CreateImageDto image);
+        public Task<bool> UploadImage(Image image);
         public Task<List<Image>> GetImages();
     }
 }
