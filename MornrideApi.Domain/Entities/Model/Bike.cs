@@ -39,12 +39,11 @@ namespace MornrideApi.Domain.Entities.Model
         public float Price { get; set; }
 
         public ICollection<BikeCategory>? BikeCategories { get; set; }
-        public ICollection<Image>? BikeImages { get; set; }
-
+        public ICollection<BikeImage>? BikeImages { get; set; }
         
-        private List<string>? _avaliableColors;
+        private ICollection<string>? _avaliableColors;
         [NotMapped]
-        public List<string>? AvaliableColors
+        public ICollection<string>? AvaliableColors
         {
             get
             {
