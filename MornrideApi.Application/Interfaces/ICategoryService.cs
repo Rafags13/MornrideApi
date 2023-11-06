@@ -10,7 +10,7 @@ namespace MornrideApi.Application.Interfaces
 {
     public interface ICategoryService
     {
-        public Task<List<Category>> GetAll();
+        public Task<IEnumerable<Category>> GetAll();
         public Category? GetById(int id);
         public Task<bool> AddCategory(CreateCategoryDto category);
     }

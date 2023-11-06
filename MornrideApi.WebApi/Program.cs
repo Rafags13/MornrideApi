@@ -20,6 +20,7 @@ builder.Services.AddDbContext<DataContext>(option =>
 builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBikeImageService, BikeImageService>();
+builder.Services.AddScoped<IBikeCategoryService, BikeCategoryService>();
 builder.Services.AddUnitOfWork<DataContext>();
 
 builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);

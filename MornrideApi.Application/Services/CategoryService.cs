@@ -26,10 +26,10 @@ namespace MornrideApi.Application.Services
             return sucess;
         }
 
-        public async Task<List<Category>> GetAll()
+        public async Task<IEnumerable<Category>> GetAll()
         {
             var categories = await _unitOfWork.GetRepository<Category>().GetPagedListAsync();
-            return categories.Items.ToList();
+            return categories.Items;
         }
 
         public Category? GetById(int id)

@@ -22,7 +22,7 @@ namespace MornrideApi.WebApi.Controllers
             {
                 var categories = await _categoryService.GetAll();
 
-                if(categories == null || categories.Count == 0)
+                if(categories == null || categories.Count() == 0)
                 {
                     return Ok("Não existe nenhuma categoria cadastrada atualmente no sistema.");
                 }
