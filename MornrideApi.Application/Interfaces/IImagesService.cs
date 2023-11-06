@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MornrideApi.Application.Interfaces
 {
-    public interface ImgService
+    public interface IImagesService
     {
-        public Task<bool> UploadImage(Image image);
+        public Task<bool> UploadImage(CreateImageDto image);
         public Task<List<Image>> GetImages();
     }
 }

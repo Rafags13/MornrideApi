@@ -4,7 +4,7 @@ using MornrideApi.Domain.Entities.Dto;
 using MornrideApi.Domain.Entities.Model;
 
 namespace MornrideApi.Application.Services { 
-    public class ImagesService : ImgService
+    public class ImagesService : IImagesService
     {
         private readonly IUnitOfWork _unitOfWork;
         public ImagesService(IUnitOfWork unitOfWork) 
@@ -12,9 +12,15 @@ namespace MornrideApi.Application.Services {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> UploadImage(Image image)
+        public async Task<bool> UploadImage(CreateImageDto image)
         {
-            _unitOfWork.GetRepository<Image>().Insert(image);
+            if (image == null)
+            {
+                throw new Exception("Não é possível inserir uma imagem vazia.");
+            }
+
+            var newImage = new Image { Url = image.Url, Description = image.Description };
+            _unitOfWork.GetRepository<Image>().Insert(newImage);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
 

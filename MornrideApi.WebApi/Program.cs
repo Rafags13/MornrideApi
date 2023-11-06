@@ -16,7 +16,7 @@ builder.Services.AddDbContext<DataContext>(option =>
 // Add services to the container.
 
 
-builder.Services.AddScoped<ImgService, ImagesService>();
+builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddUnitOfWork<DataContext>();
 

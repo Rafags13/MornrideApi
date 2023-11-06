@@ -9,14 +9,14 @@ namespace MornrideApi.WebApi.Controllers
     [Route("[controller]")]
     public class ImagesController : Controller
     {
-        private readonly ImgService _imageService;
-        public ImagesController(ImgService imageService)
+        private readonly IImagesService _imageService;
+        public ImagesController(IImagesService imageService)
         {
             _imageService = imageService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateImagesFromBike([FromBody] Image image)
+        public async Task<IActionResult> Create([FromBody] CreateImageDto image)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace MornrideApi.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetImages()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
