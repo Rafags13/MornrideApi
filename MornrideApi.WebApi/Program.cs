@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MornrideApi.Application.Interfaces;
 using MornrideApi.Application.Services;
 using MornrideApi.Data.Context;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBikeImageService, BikeImageService>();
 builder.Services.AddUnitOfWork<DataContext>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

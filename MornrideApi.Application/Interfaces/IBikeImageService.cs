@@ -1,4 +1,5 @@
-﻿using MornrideApi.Domain.Entities.Model;
+﻿using MornrideApi.Domain.Entities.Dto;
+using MornrideApi.Domain.Entities.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace MornrideApi.Application.Interfaces
 {
     public interface IBikeImageService
     {
-        public List<BikeImage> GetAll();
+        public Task<List<BikeImage>> GetAll();
+        public Task<bool> CreateBikeImage(CreateBikeImageDto bikeImageDto);
     }
 }
