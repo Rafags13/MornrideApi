@@ -1,6 +1,8 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using MornrideApi.Application.Interfaces;
 using MornrideApi.Domain.Entities.Dto;
+using MornrideApi.Domain.Entities.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +19,21 @@ namespace MornrideApi.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task<bool> CreateLinkForBike(CreateLinkBikeCategoryDto createLinkBikeCategoryDto)
+        public async Task<bool> CreateLinkForBike(CreateBikeCategoryDto createLinkBikeCategoryDto)
         {
-            throw new NotImplementedException();
+            var newBikeCategory = new BikeCategory { BikeId = createLinkBikeCategoryDto.BikeId, CategoryId =  createLinkBikeCategoryDto.CategoryId };
+            _unitOfWork.GetRepository<BikeCategory>().Insert(newBikeCategory);
+            var sucessful = await _unitOfWork.SaveChangesAsync() > 0;
+
+            return sucessful;
         }
 
-        public Task<IEnumerable<IBikeCategoryService>> GetAll()
+        public async Task<IEnumerable<BikeCategory>> GetAll()
         {
-            throw new NotImplementedException();
+            var allBikeCategories = await _unitOfWork.GetRepository<BikeCategory>().GetPagedListAsync(include: x => x.Include(p => p.Bike).Include(p => p.Category));
+
+            return allBikeCategories.Items;
+            
         }
     }
 }

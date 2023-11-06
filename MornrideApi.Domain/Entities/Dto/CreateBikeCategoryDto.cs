@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MornrideApi.Domain.Entities.Dto
 {
-    public class CreateLinkBikeCategoryDto
+    public class CreateBikeCategoryDto
     {
         public int BikeId { get; set; }
         public int CategoryId { get; set; }

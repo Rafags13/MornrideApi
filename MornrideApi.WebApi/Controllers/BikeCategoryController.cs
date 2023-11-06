@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MornrideApi.Application.Interfaces;
+using MornrideApi.Domain.Entities.Dto;
 
 namespace MornrideApi.WebApi.Controllers
 {
@@ -26,6 +27,26 @@ namespace MornrideApi.WebApi.Controllers
                 }
 
                 return Ok(AllBikeCategories);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateBikeCategoryDto createBikeCategoryDto)
+        {
+            try
+            {
+                var sucessful = await _bikeCategoryService.CreateLinkForBike(createBikeCategoryDto);
+
+                if(!sucessful)
+                {
+                    return BadRequest("Não foi possível criar o vínculo entre categoria e bike. Tente novamente, mais tarde");
+                }
+
+                return Ok("Vínculo criado com sucesso");
             }
             catch (Exception ex)
             {
