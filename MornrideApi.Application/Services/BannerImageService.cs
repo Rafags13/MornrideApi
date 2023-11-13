@@ -15,7 +15,18 @@ namespace MornrideApi.Application.Services
 
         public async Task<bool> CreateImage(CreateBannerImageDto createBannerImageDto)
         {
-            return true;
+            var newBannerImage = new BannerImage
+            {
+                Label = createBannerImageDto.Label,
+                Collection = createBannerImageDto.Collection,
+                IdBannerImage = createBannerImageDto.ImageBannerId
+            };
+
+            _unitOfWork.GetRepository<BannerImage>().Insert(newBannerImage);
+
+            var success = await _unitOfWork.SaveChangesAsync() > 0;
+
+            return success;
         }
     }
 }

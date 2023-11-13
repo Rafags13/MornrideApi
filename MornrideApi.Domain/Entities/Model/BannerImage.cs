@@ -11,7 +11,7 @@ namespace MornrideApi.Domain.Entities.Model
         public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(250)]
         public string Label { get; set; } = string.Empty;
 
         [Required]

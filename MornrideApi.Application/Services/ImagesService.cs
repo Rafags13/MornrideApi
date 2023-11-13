@@ -26,7 +26,8 @@ namespace MornrideApi.Application.Services {
 
         public async Task<List<Image>> GetImages()
         {
-            var images = await _unitOfWork.GetRepository<Image>().GetPagedListAsync();
+            var counting = _unitOfWork.GetRepository<Image>().Count();
+            var images = await _unitOfWork.GetRepository<Image>().GetPagedListAsync(pageSize: counting);
 
             return images.Items.ToList();
         }
