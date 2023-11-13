@@ -21,8 +21,8 @@ namespace MornrideApi.Domain.Entities.Model
         [Required]
         [Column(Order = 1)]
         [ForeignKey("ImageId")]
-        public int IdBannerImage { get; set; }
-        public Image? ImageFrombanner { get; set; }
+        public int ImageId { get; set; }
+        public Image? ImageFromBanner { get; set; }
 
     }
 }

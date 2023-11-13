@@ -34,5 +34,24 @@ namespace MornrideApi.WebApi.Controllers
                
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+               var allBikeImages = await _bannerImageService.GetAll();
+
+               if(!(allBikeImages.Any()) || allBikeImages == null) {
+                    return Ok("Nenhum banner está cadastrado no sistema, atualmente. Tente cadastrar um e faça essa chamada novamente.");
+                }
+
+                return Ok(allBikeImages);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
