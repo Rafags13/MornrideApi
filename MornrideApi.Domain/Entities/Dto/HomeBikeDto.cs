@@ -11,8 +11,8 @@ namespace MornrideApi.Domain.Entities.Dto
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public int Stock { get; set; }
-        public ICollection<string>? AvaliableColors { get; set; }
-        public ICollection<HomeCategoryDto>? Categories { get; set; }
+        public IEnumerable<string>? AvaliableColors { get; set; }
+        public IEnumerable<string>? CategoryNames { get; set; }
         public float Price { get; set; }
     }
 }

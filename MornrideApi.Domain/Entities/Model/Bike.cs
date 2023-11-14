@@ -49,7 +49,7 @@ namespace MornrideApi.Domain.Entities.Model
         {
             get
             {
-                var avaliableColors = BikeImages?.Select(x => x.HexColor).ToList();
+                var avaliableColors = BikeImages?.DistinctBy(images => images.HexColor).Select(x => x.HexColor).ToList();
                 _avaliableColors = avaliableColors ?? new List<string>();
                 return _avaliableColors;
             }
