@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MornrideApi.Domain.Entities.Dto
 {
-    public class CreateCategoryDto
+    public class HomeBannerDto
     {
-        public string Name { get; set; } = string.Empty;
-        public string DisplayName { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string Collection { get; set; } = string.Empty;
     }
 }

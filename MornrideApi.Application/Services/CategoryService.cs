@@ -20,7 +20,7 @@ namespace MornrideApi.Application.Services
 
         public async Task<bool> AddCategory(CreateCategoryDto category)
         {
-            var newCategory = new Category { Name = category.Name, Description = category.Description};
+            var newCategory = new Category { Name = category.Name, Description = category.Description, DisplayName = category.DisplayName};
             _unitOfWork.GetRepository<Category>().Insert(newCategory);
             var sucess = await _unitOfWork.SaveChangesAsync() > 0;
             return sucess;
@@ -28,7 +28,8 @@ namespace MornrideApi.Application.Services
 
         public async Task<IEnumerable<Category>> GetAll()
         {
-            var categories = await _unitOfWork.GetRepository<Category>().GetPagedListAsync();
+            var counting = _unitOfWork.GetRepository<Category>().Count();
+            var categories = await _unitOfWork.GetRepository<Category>().GetPagedListAsync(pageSize: counting);
             return categories.Items;
         }
 

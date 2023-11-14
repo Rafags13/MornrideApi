@@ -11,6 +11,10 @@ namespace MornrideApi.Domain.Entities.Model
 
         [Required]
         [StringLength(50)]
+        public string DisplayName { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
