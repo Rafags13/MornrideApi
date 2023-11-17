@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MornrideApi.Application.Interfaces;
 using MornrideApi.Domain.Entities.Dto;
+using MornrideApi.Domain.Entities.Enums;
 using MornrideApi.Domain.Entities.Model;
 using System;
 using System.Collections.Generic;
@@ -34,20 +35,24 @@ namespace MornrideApi.Application.Services
                 _unitOfWork.GetRepository<Category>()
                 .GetPagedList()
                 .Items
-                .Select(x => new HomeCategoryDto { Name = x.Name, DisplayName = x.DisplayName});
+                .Select(x => new HomeCategoryDto { Name = x.Name, DisplayName = x.DisplayName})
+                .OrderBy(x => x.Name);
 
             var bikes =
                 _unitOfWork.GetRepository<Bike>()
                 .GetPagedList(pageSize: 5, include:
-                    x => x.Include(x => x.BikeCategories)
+                    x => x.Include(x => x.BikeCategories)   
                             .ThenInclude(category => category.Category)
-                        .Include(x => x.BikeImages))
+                        .Include(x => x.BikeImages)
+                        .ThenInclude(bikeImage => bikeImage.Image)
+                        )
                 .Items
                 .Select(x => new HomeBikeDto {
                     Id = x.Id, Title = x.Title,
                     AvaliableColors = x.AvaliableColors,
-                    CategoryNames = x.BikeCategories
-                        .Select(b => b.Category.Name),
+                    ImageDiplayBikeUrl = x.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FullBike)?.Image?.Url ?? "",
+                    CategoryNames = x.BikeCategories?
+                        .Select(b => b.Category!.Name),
                     Price = x.Price,
                     Stock = x.Stock });
 

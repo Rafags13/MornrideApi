@@ -13,6 +13,10 @@ namespace MornrideApi.Domain.Entities.Model
         [StringLength(7)]
         public string HexColor { get; set; } = string.Empty;
 
+        [Required]
+        [StringLength(15)]
+        public string ImagePosition { get; set; } = string.Empty;
+
         [Column(Order = 1)]
         [ForeignKey("ImageId")]
         public int ImageId { get; set; }
