@@ -11,11 +11,9 @@ namespace MornrideApi.WebApi.Controllers
     [Route("[controller]")]
     public class BikeController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IBikeService _bikeService;
-        public BikeController(IUnitOfWork unitOfWork, IBikeService bikeService) 
+        public BikeController(IBikeService bikeService) 
         {
-            _unitOfWork = unitOfWork;
             _bikeService = bikeService;
         }
 

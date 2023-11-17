@@ -60,7 +60,34 @@ namespace MornrideApi.Application.Services
 
         public IEnumerable<HomeBikeDto> GetBikesByCategory(string collection)
         {
-            throw new NotImplementedException();
+            var count = _unitOfWork.GetRepository<Bike>().Count();
+
+            var bikes =
+                _unitOfWork.GetRepository<Bike>()
+                .GetPagedList(pageSize: count,
+                predicate: x => x.BikeCategories.Select(bikeCategory => bikeCategory.Category.Name).Contains(collection), 
+                include: x =>
+                x.Include(y => y.BikeCategories)
+                    .ThenInclude(category => category.Category)
+                .Include(y => y.BikeImages))
+                .Items
+                .Select(x => new HomeBikeDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Price = x.Price,
+                    Stock = x.Stock,
+                    AvaliableColors = x.AvaliableColors,
+                    CategoryNames = x.BikeCategories?.Select(y => y.Category.Name),
+                    ImageDiplayBikeUrl = x.BikeImages?.FirstOrDefault(predicate: bikeImage => bikeImage.ImagePosition == PositionOfBikeImage.FullBike)?.Image?.Url ?? ""
+                });
+
+            if(bikes == null || !bikes.Any())
+            {
+                throw new Exception("Essa categoria não possui nenhuma bike no momento.");
+            }
+
+            return bikes;
         }
     }
 }
