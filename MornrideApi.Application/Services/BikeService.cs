@@ -69,7 +69,8 @@ namespace MornrideApi.Application.Services
                 include: x =>
                 x.Include(y => y.BikeCategories)
                     .ThenInclude(category => category.Category)
-                .Include(y => y.BikeImages))
+                .Include(y => y.BikeImages)
+                    .ThenInclude(image => image.Image))
                 .Items
                 .Select(x => new HomeBikeDto
                 {
