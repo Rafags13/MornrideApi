@@ -13,27 +13,44 @@ namespace MornrideApi.WebApi.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBikeService _bikeService;
-        public BikeController(IUnitOfWork unitOfWork) 
+        public BikeController(IUnitOfWork unitOfWork, IBikeService bikeService) 
         {
             _unitOfWork = unitOfWork;
+            _bikeService = bikeService;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var allBikes = _unitOfWork.GetRepository<Bike>().GetPagedList(include: x => x.Include(x => x.BikeCategories).ThenInclude(bikeCategory => bikeCategory.Category));
-            return Ok(allBikes.Items);
+            try
+            {
+                var bikes = _bikeService.GetAll();
+                return Ok(bikes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateBikeDto bikeDto) 
         {
-            var newBike = new Bike { Title = bikeDto.Title, Description = bikeDto.Description, Price = bikeDto.Price, Stock = bikeDto.Stock };
-            _unitOfWork.GetRepository<Bike>().Insert(newBike);
+            try
+            {
+                var success = await _bikeService.AddBike(bikeDto);
 
-            await _unitOfWork.SaveChangesAsync();
+                if (!success)
+                {
+                    return BadRequest("Não foi possível adicionar a bike. Tente novamente, mais tarde.");
+                }
 
-            return Ok("Bike adicionada com sucesso");
+                return Ok("Bike adicionada com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             
         }
 

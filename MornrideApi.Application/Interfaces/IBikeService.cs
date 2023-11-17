@@ -5,5 +5,7 @@ namespace MornrideApi.Application.Interfaces
     public interface IBikeService
     {
         public IEnumerable<HomeBikeDto> GetBikesByCategory(string collection);
+        public IEnumerable<HomeBikeDto> GetAll();
+        public Task<bool> AddBike(CreateBikeDto bikeDto);
     }
 }
