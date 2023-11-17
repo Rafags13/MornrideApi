@@ -16,7 +16,7 @@ builder.Services.AddDbContext<DataContext>(option =>
 
 // Add services to the container.
 
-
+builder.Services.AddScoped<IBikeService, BikeService>();
 builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBikeImageService, BikeImageService>();

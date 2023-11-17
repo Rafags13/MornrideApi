@@ -1,6 +1,7 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MornrideApi.Application.Interfaces;
 using MornrideApi.Domain.Entities.Dto;
 using MornrideApi.Domain.Entities.Model;
 
@@ -11,6 +12,7 @@ namespace MornrideApi.WebApi.Controllers
     public class BikeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IBikeService _bikeService;
         public BikeController(IUnitOfWork unitOfWork) 
         {
             _unitOfWork = unitOfWork;
@@ -33,6 +35,21 @@ namespace MornrideApi.WebApi.Controllers
 
             return Ok("Bike adicionada com sucesso");
             
+        }
+
+        [HttpGet("{collection}")]
+        public IActionResult GetBikesByCollection([FromRoute] string collection)
+        {
+            try
+            {
+                var bikes = _bikeService.GetBikesByCategory(collection);
+                return Ok(bikes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }
