@@ -66,5 +66,20 @@ namespace MornrideApi.WebApi.Controllers
             }
 
         }
+
+        [HttpGet("Profile/{bikeId}")]
+        public IActionResult GetBikeDetail([FromRoute] int bikeId)
+        {
+            try
+            {
+                var bikeProfile = _bikeService.GetBikeDetails(bikeId);
+
+                return Ok(bikeProfile);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

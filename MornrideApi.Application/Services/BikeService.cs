@@ -58,6 +58,11 @@ namespace MornrideApi.Application.Services
             return allBikes;
         }
 
+        public BikeDetailsDto GetBikeDetails(int bikeId)
+        {
+            return new BikeDetailsDto();
+        }
+
         public IEnumerable<HomeBikeDto> GetBikesByCategory(string collection)
         {
             var count = _unitOfWork.GetRepository<Bike>().Count();
