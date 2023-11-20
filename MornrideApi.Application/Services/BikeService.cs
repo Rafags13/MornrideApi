@@ -60,7 +60,42 @@ namespace MornrideApi.Application.Services
 
         public BikeDetailsDto GetBikeDetails(int bikeId)
         {
-            return new BikeDetailsDto();
+            var currentBike =
+                _unitOfWork.GetRepository<Bike>()
+                .GetFirstOrDefault(predicate: x => x.Id == bikeId,
+                include: x => x.Include(bikeImage => bikeImage.BikeImages).ThenInclude(image => image.Image)
+                    .Include(bikeCategory => bikeCategory.BikeCategories).ThenInclude(category => category.Category));
+
+            if (currentBike == null)
+            {
+                throw new Exception("Desculpe, não foi possível encontrar a bike requisitada. Por favor, Contacte um administrador.");
+            }
+
+            var informations = CreateModelFromBikeInformations(currentBike);
+
+            return informations;
+        }
+
+        private BikeDetailsDto CreateModelFromBikeInformations(Bike bikeSearched)
+        {
+            var bikeInformations = new BikeDetailsDto
+            {
+                Title = bikeSearched.Title,
+                Price = bikeSearched.Price,
+                Stock = bikeSearched.Stock,
+                Description = bikeSearched.Description,
+                Categories = bikeSearched!.BikeCategories!.Select(x => x.Category)!.Select(names => names.Name),
+                Images = new BikeImagesProfileDto
+                {
+                    FullBikeUrl = bikeSearched?.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FullBike)?.Image?.Url ?? "",
+                    BackWheelUrl = bikeSearched?.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.BackWheel)?.Image?.Url ?? "",
+                    FrontWheelUrl = bikeSearched?.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FrontWheel)?.Image?.Url ?? "",
+                    FrontBikeUrl = bikeSearched?.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FrontBike)?.Image?.Url ?? "",
+                },
+                AvaliableColors = bikeSearched?.AvaliableColors ?? Enumerable.Empty<string>()
+            };
+
+            return bikeInformations;
         }
 
         public IEnumerable<HomeBikeDto> GetBikesByCategory(string collection)

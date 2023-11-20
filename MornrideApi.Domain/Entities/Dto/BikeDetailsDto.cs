@@ -14,6 +14,7 @@ namespace MornrideApi.Domain.Entities.Dto
         public float Price { get; set; }
         public int Stock { get; set; }
         public string Description { get; set; } = string.Empty;
-        public ICollection<string> Categories { get; set; } = new Collection<string>(); 
+        public IEnumerable<string> Categories { get; set; } = Enumerable.Empty<string>();
+        public IEnumerable<string> AvaliableColors { get; set; } = Enumerable.Empty<string>();
     }
 }
