@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MornrideApi.Domain.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,7 @@ namespace MornrideApi.Domain.Entities.Dto
 {
     public class BikeImagesProfileDto
     {
-        public string FullBikeUrl { get; set; } = string.Empty;
-        public string BackWheelUrl { get; set; } = string.Empty;
-        public string FrontBikeUrl { get; set; } = string.Empty;
-        public string FrontWheelUrl { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
+        public string Position { get; set; } = string.Empty;
     }
 }

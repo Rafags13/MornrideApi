@@ -85,14 +85,8 @@ namespace MornrideApi.Application.Services
                 Stock = bikeSearched.Stock,
                 Description = bikeSearched.Description,
                 Categories = bikeSearched!.BikeCategories!.Select(x => x.Category)!.Select(names => names.Name),
-                Images = new BikeImagesProfileDto
-                {
-                    FullBikeUrl = bikeSearched?.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FullBike)?.Image?.Url ?? "",
-                    BackWheelUrl = bikeSearched?.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.BackWheel)?.Image?.Url ?? "",
-                    FrontWheelUrl = bikeSearched?.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FrontWheel)?.Image?.Url ?? "",
-                    FrontBikeUrl = bikeSearched?.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FrontBike)?.Image?.Url ?? "",
-                },
-                AvaliableColors = bikeSearched?.AvaliableColors ?? Enumerable.Empty<string>()
+                AvaliableColors = bikeSearched?.AvaliableColors ?? Enumerable.Empty<string>(),
+                Images = bikeSearched.BikeImages.Select(x => new BikeImagesProfileDto { ImageUrl = x.Image.Url, Position = x.ImagePosition})
             };
 
             return bikeInformations;
