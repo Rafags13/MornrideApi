@@ -4,6 +4,8 @@ using MornrideApi.Application.Interfaces;
 using MornrideApi.Application.Services;
 using MornrideApi.Data.Context;
 using Newtonsoft.Json;
+using Redis.OM;
+using System.Threading;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,13 @@ builder.Services.AddScoped<IBikeImageService, BikeImageService>();
 builder.Services.AddScoped<IBikeCategoryService, BikeCategoryService>();
 builder.Services.AddScoped<IBannerImageService, BannerImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICachingService, CachingService>();
 builder.Services.AddUnitOfWork<DataContext>();
+
+
+string redisConnectionString = builder.Configuration["REDIS_CONNECTION_STRING"];
+builder.Services.AddSingleton(new RedisConnectionProvider(redisConnectionString));
+builder.Services.AddHostedService<IndexCreationService>();
 
 builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
