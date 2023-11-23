@@ -41,7 +41,9 @@ namespace MornrideApi.Domain.Entities.Model
         public ICollection<BikeCategory>? BikeCategories { get; set; }
 
         public ICollection<BikeImage>? BikeImages { get; set; }
-        
+
+        public Cart? CurrentCart { get; set; }
+
         private ICollection<string>? _avaliableColors;
 
         [NotMapped]

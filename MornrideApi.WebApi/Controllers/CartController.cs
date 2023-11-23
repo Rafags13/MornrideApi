@@ -14,29 +14,53 @@ namespace MornrideApi.WebApi.Controllers
     public class CartController : Controller
     {
         private readonly ICachingService _cachingService;
-        public CartController(ICachingService cachingService)
+        private readonly ICartService _cartService;
+        public CartController(ICachingService cachingService, ICartService cartService)
         {
             _cachingService = cachingService;
+            _cartService = cartService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllItems()
         {
-            var bikes = await _cachingService.GetAllItems();
-
-            if (!bikes.Any())
+            //var bikes = await _cachingService.GetAllItems();
+            try
             {
-                return Ok("Nenhuma bike existe no carrinho.");
+                var bikes = await _cartService.GetAllCartItems();
+
+                if (!bikes.Any())
+                {
+                    return Ok("Nenhuma bike existe no carrinho.");
+                }
+                return Ok(bikes);
             }
-            return Ok(bikes);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBikeIntoCart([FromBody] BikeCart bikeCart)
+        public async Task<IActionResult> AddBikeIntoCart([FromBody] int bikeId)
         {
-            await _cachingService.AddBikeIntoCart(bikeCart);
+            try
+            {
+                //await _cachingService.AddBikeIntoCart(bikeCart);
+                var success = await _cartService.AddItem(bikeId: bikeId);
+                if (!success)
+                {
+                    return NotFound("Não foi possível encontrar a bike solicitada no momento. Tente novamente mais tarde.");
+                }
 
-            return Ok($"Bike: {bikeCart.Title} adicionada ao carrinho!");
+                return Ok($"Bike adicionada ao carrinho!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
+           
         }
 
         [HttpGet("{id}")]

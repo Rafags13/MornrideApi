@@ -26,6 +26,7 @@ builder.Services.AddScoped<IBikeCategoryService, BikeCategoryService>();
 builder.Services.AddScoped<IBannerImageService, BannerImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICachingService, CachingService>();
+builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddUnitOfWork<DataContext>();
 
 

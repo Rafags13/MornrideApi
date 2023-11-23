@@ -16,6 +16,7 @@ namespace MornrideApi.Data.Context
         public DbSet<Image> Images { get; set; }
         public DbSet<BikeImage> BikeImages { get; set; }
         public DbSet<BannerImage> BannerImages { get; set; }
+        public DbSet<Cart> Carts { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
     }
 }
