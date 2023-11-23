@@ -13,6 +13,8 @@ namespace MornrideApi.Domain.Entities.RedisModels
         [Indexed]
         public string Title { get; set; } = string.Empty;
         [Indexed]
+        public string ImageUrl { get; set; } = string.Empty;
+        [Indexed]
         public int Amount { get; set; }
         [Indexed]
         public float Price { get; set; }

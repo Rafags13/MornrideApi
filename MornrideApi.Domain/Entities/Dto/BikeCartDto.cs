@@ -11,6 +11,7 @@ namespace MornrideApi.Domain.Entities.Dto
     {
         public int BikeId { get; set; }
         public string Title { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
         public int Amount { get; set; }
         public float UnitaryPrice { get; set; }
         public IEnumerable<string> AvaliableColors {  get; set; } = Enumerable.Empty<string>();

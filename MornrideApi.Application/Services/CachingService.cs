@@ -14,7 +14,7 @@ namespace MornrideApi.Application.Services
         public CachingService(RedisConnectionProvider provider)
         {
             _provider = provider;
-            _bikeCart = (RedisCollection<BikeCart>)provider.RedisCollection<BikeCart>();
+            _bikeCart = (RedisCollection<BikeCart>) provider.RedisCollection<BikeCart>();
         }
 
         public async Task AddBikeIntoCart(BikeCartDto bikeCartDto)
@@ -30,6 +30,7 @@ namespace MornrideApi.Application.Services
             {
                 var newBikeCart = new BikeCart {
                     Id = bikeCartDto.BikeId,
+                    ImageUrl = bikeCartDto.ImageUrl,
                     Title =  bikeCartDto.Title,
                     Amount = bikeCartDto.Amount,
                     Price = bikeCartDto.UnitaryPrice,
