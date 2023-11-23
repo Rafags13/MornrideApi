@@ -10,6 +10,6 @@ namespace MornrideApi.Application.Interfaces
     public interface ICartService
     {
         public Task<IEnumerable<BikeCartDto>> GetAllCartItems();
-        public Task<bool> AddItem(int bikeId);
+        public Task<bool> AddItem(BikeCartDto bikeCartDto);
     }
 }

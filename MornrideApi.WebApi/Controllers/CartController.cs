@@ -6,6 +6,7 @@ using Redis.OM;
 using System;
 using MornrideApi.Domain.Entities.RedisModels;
 using Microsoft.EntityFrameworkCore;
+using MornrideApi.Domain.Entities.Dto;
 
 namespace MornrideApi.WebApi.Controllers
 {
@@ -42,12 +43,12 @@ namespace MornrideApi.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBikeIntoCart([FromBody] int bikeId)
+        public async Task<IActionResult> AddBikeIntoCart([FromBody] BikeCartDto bikeCartDto)
         {
             try
             {
                 //await _cachingService.AddBikeIntoCart(bikeCart);
-                var success = await _cartService.AddItem(bikeId: bikeId);
+                var success = await _cartService.AddItem(bikeCartDto);
                 if (!success)
                 {
                     return NotFound("Não foi possível encontrar a bike solicitada no momento. Tente novamente mais tarde.");
