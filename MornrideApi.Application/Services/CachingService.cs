@@ -4,6 +4,10 @@ using MornrideApi.Domain.Entities.RedisModels;
 using Redis.OM.Searching;
 using Redis.OM;
 using MornrideApi.Domain.Entities.Dto;
+using Arch.EntityFrameworkCore.UnitOfWork;
+using MornrideApi.Domain.Entities.Model;
+using Microsoft.EntityFrameworkCore;
+using MornrideApi.Domain.Entities.Enums;
 
 namespace MornrideApi.Application.Services
 {
@@ -11,35 +15,42 @@ namespace MornrideApi.Application.Services
     {
         private readonly RedisCollection<BikeCart> _bikeCart;
         private readonly RedisConnectionProvider _provider;
-        public CachingService(RedisConnectionProvider provider)
+        private readonly IUnitOfWork _unitOfWork;
+        public CachingService(RedisConnectionProvider provider, IUnitOfWork unitOfWork)
         {
             _provider = provider;
             _bikeCart = (RedisCollection<BikeCart>) provider.RedisCollection<BikeCart>();
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task AddBikeIntoCart(BikeCartDto bikeCartDto)
+        public async Task AddBikeIntoCart(BikeCart bikeDto)
         {
-            var bikeAlsoExistsInCart = await _bikeCart.FindByIdAsync(bikeCartDto.BikeId.ToString());
+            var bikeAlsoExistsInCart = await _bikeCart.FindByIdAsync(bikeDto.Id.ToString());
 
             if (bikeAlsoExistsInCart != null)
             {
-                bikeAlsoExistsInCart.Amount += bikeCartDto.Amount;
+                bikeAlsoExistsInCart.Amount = bikeDto.Amount; // updates the current value to new value in cache
                 await _bikeCart.UpdateAsync(bikeAlsoExistsInCart);
 
             } else
             {
-                var newBikeCart = new BikeCart {
-                    Id = bikeCartDto.BikeId,
-                    ImageUrl = bikeCartDto.ImageUrl,
-                    Title =  bikeCartDto.Title,
-                    Amount = bikeCartDto.Amount,
-                    Price = bikeCartDto.UnitaryPrice,
-                    AvaliableColors = bikeCartDto.AvaliableColors.ToArray()
-                };
-
-                await _bikeCart.InsertAsync(newBikeCart);
+                await AddBikeIntoCacheByLastReferente(bikeDto);
             }
+        }
 
+        private async Task AddBikeIntoCacheByLastReferente(BikeCart bikeDto)
+        {
+            var newBikeCart = new BikeCart
+            {
+                Id = bikeDto.Id,
+                ImageUrl = bikeDto.ImageUrl,
+                Title = bikeDto.Title,
+                Amount = bikeDto.Amount,
+                Price = bikeDto.Price,
+                AvaliableColors = bikeDto.AvaliableColors
+            };
+
+            await _bikeCart.InsertAsync(newBikeCart);
         }
 
         public async Task AddCurrentBikesIntoCart(IEnumerable<BikeCart> bikes)

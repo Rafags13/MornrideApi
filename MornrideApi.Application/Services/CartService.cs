@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MornrideApi.Application.Interfaces;
 using MornrideApi.Domain.Entities.Dto;
+using MornrideApi.Domain.Entities.Enums;
 using MornrideApi.Domain.Entities.Model;
 using MornrideApi.Domain.Entities.RedisModels;
 using System;
@@ -23,36 +24,36 @@ namespace MornrideApi.Application.Services
             _cachingService = cachingService;
         }
 
-        public async Task<bool> AddItem(BikeCartDto bikeCartDto)
+        public async Task<bool> AddItem(AddBikeDto bikeDto)
         {
-            await _cachingService.AddBikeIntoCart(bikeCartDto);
+            var bikeAlsoExistsInCart = _unitOfWork.GetRepository<Cart>().GetFirstOrDefault(predicate: cart => cart.BikeId == bikeDto.BikeId);
 
-            var bikeAlsoExistsInCart = _unitOfWork.GetRepository<Cart>().GetFirstOrDefault(predicate: cart => cart.BikeId == bikeCartDto.BikeId);
-
-            if(bikeAlsoExistsInCart == null)
+            if(bikeAlsoExistsInCart != null)
             {
-                return await AddBikeWhenDontExistsInCart(bikeCartDto.BikeId, bikeCartDto.Amount);
+                return await UpdateCurrentAmount(bikeDto);
+
             }
 
-            return await UpdateCurrentAmount(bikeCartDto.BikeId, bikeCartDto.Amount);
+            return await AddBikeWhenDontExistsInCart(bikeDto);
+            
         }
 
-        private async Task<bool> AddBikeWhenDontExistsInCart(int bikeId, int amount)
+        private async Task<bool> AddBikeWhenDontExistsInCart(AddBikeDto bikeDto)
         {
             var newBikeInCart = new Cart
             {
-                BikeId = bikeId,
-                Amount = amount,
+                BikeId = bikeDto.BikeId,
+                Amount = bikeDto.Amount,
             };
 
             await _unitOfWork.GetRepository<Cart>().InsertAsync(newBikeInCart);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
-        private async Task<bool> UpdateCurrentAmount(int bikeId, int amount)
+        private async Task<bool> UpdateCurrentAmount(AddBikeDto bikeDto)
         {
-            var currentBikeCart = _unitOfWork.GetRepository<Cart>().GetFirstOrDefault(predicate: x => x.BikeId == bikeId);
-            currentBikeCart.Amount += amount;
+            var currentBikeCart = _unitOfWork.GetRepository<Cart>().GetFirstOrDefault(predicate: x => x.BikeId == bikeDto.BikeId);
+            currentBikeCart.Amount += bikeDto.Amount;
 
             _unitOfWork.GetRepository<Cart>().Update(currentBikeCart);
             return await _unitOfWork.SaveChangesAsync() > 0;
@@ -89,16 +90,31 @@ namespace MornrideApi.Application.Services
             return bikesInCartsCache;
         }
 
-        public async Task<BikeCart?> GetBikeCartById(int id)
+        public BikeCart GetBikeInCartByHisId(int id)
         {
-            var currentBikeInCache = await _cachingService.GetBikeCardById(id: id.ToString());
+            var currentBikeInCache = _unitOfWork.GetRepository<Cart>().GetFirstOrDefault(
+                predicate: x => x.BikeId == id,
+                include: x => x.Include(x => x.CurrentBike).ThenInclude(bikeImage => bikeImage.BikeImages).ThenInclude(images => images.Image)
+                );
 
             if (currentBikeInCache == null)
             {
                 throw new Exception("Essa bike não existe no carrinho.");
             }
 
-            return currentBikeInCache;
+            var bikeDto = new BikeCart
+            {
+                Id = id,
+                Title = currentBikeInCache?.CurrentBike?.Title ?? "",
+                Amount = currentBikeInCache?.Amount ?? 0,
+                Price = currentBikeInCache?.CurrentBike?.Price ?? 0,
+                AvaliableColors = currentBikeInCache?.CurrentBike?.AvaliableColors?.ToArray() ?? Array.Empty<string>(),
+                ImageUrl =
+                    currentBikeInCache?.CurrentBike?.BikeImages?
+                        .FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FullBike)?.Image?.Url ?? "",
+            };
+
+            return bikeDto;
         }
     }
 }

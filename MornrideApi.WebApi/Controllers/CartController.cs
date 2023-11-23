@@ -31,7 +31,7 @@ namespace MornrideApi.WebApi.Controllers
 
                 if (!bikes.Any())
                 {
-                    return Ok("Nenhuma bike existe no carrinho.");
+                    return Ok(Enumerable.Empty<BikeCart>());
                 }
                 return Ok(bikes);
             }
@@ -42,15 +42,19 @@ namespace MornrideApi.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBikeIntoCart([FromBody] BikeCartDto bikeCartDto)
+        public async Task<IActionResult> AddBikeIntoCart([FromBody] AddBikeDto bikeDto)
         {
             try
             {
-                var success = await _cartService.AddItem(bikeCartDto);
+                var success = await _cartService.AddItem(bikeDto);
                 if (!success)
                 {
                     return NotFound("Não foi possível encontrar a bike solicitada no momento. Tente novamente mais tarde.");
                 }
+
+                var currentBike = _cartService.GetBikeInCartByHisId(bikeDto.BikeId);
+
+                await _cachingService.AddBikeIntoCart(currentBike);
 
                 return Ok($"Bike adicionada ao carrinho!");
             }
@@ -62,11 +66,11 @@ namespace MornrideApi.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBikeCardById([FromRoute] int id)
+        public IActionResult GetBikeCardById([FromRoute] int id)
         {
             try
             {
-                var bike = await _cartService.GetBikeCartById(id);
+                var bike = _cartService.GetBikeInCartByHisId(id);
 
                 return Ok(bike);
             }

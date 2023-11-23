@@ -29,10 +29,15 @@ builder.Services.AddScoped<ICachingService, CachingService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddUnitOfWork<DataContext>();
 
+const bool USING_REDIS_SERVICE = false;
 
-string redisConnectionString = builder.Configuration["REDIS_CONNECTION_STRING"];
-builder.Services.AddSingleton(new RedisConnectionProvider(redisConnectionString));
-builder.Services.AddHostedService<IndexCreationService>();
+if(USING_REDIS_SERVICE)
+{
+    string redisConnectionString = builder.Configuration["REDIS_CONNECTION_STRING"];
+    builder.Services.AddSingleton(new RedisConnectionProvider(redisConnectionString));
+    builder.Services.AddHostedService<IndexCreationService>();
+}
+
 
 builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
