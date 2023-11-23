@@ -88,5 +88,17 @@ namespace MornrideApi.Application.Services
 
             return bikesInCartsCache;
         }
+
+        public async Task<BikeCart?> GetBikeCartById(int id)
+        {
+            var currentBikeInCache = await _cachingService.GetBikeCardById(id: id.ToString());
+
+            if (currentBikeInCache == null)
+            {
+                throw new Exception("Essa bike não existe no carrinho.");
+            }
+
+            return currentBikeInCache;
+        }
     }
 }

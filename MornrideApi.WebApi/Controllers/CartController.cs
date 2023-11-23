@@ -63,15 +63,18 @@ namespace MornrideApi.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBikeCardById([FromRoute] string id)
+        public async Task<IActionResult> GetBikeCardById([FromRoute] int id)
         {
-            var bike = await _cachingService.GetBikeCardById(id);
-
-            if (bike is null)
+            try
             {
-                return NotFound();
+                var bike = await _cartService.GetBikeCartById(id);
+
+                return Ok(bike);
             }
-            return Ok(bike);
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
     }

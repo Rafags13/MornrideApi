@@ -12,5 +12,6 @@ namespace MornrideApi.Application.Interfaces
     {
         public Task<IEnumerable<BikeCart?>> GetAllCartItems();
         public Task<bool> AddItem(BikeCartDto bikeCartDto);
+        public Task<BikeCart?> GetBikeCartById(int id);
     }
 }
