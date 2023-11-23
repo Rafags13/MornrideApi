@@ -25,7 +25,6 @@ namespace MornrideApi.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllItems()
         {
-            //var bikes = await _cachingService.GetAllItems();
             try
             {
                 var bikes = await _cartService.GetAllCartItems();
@@ -47,7 +46,6 @@ namespace MornrideApi.WebApi.Controllers
         {
             try
             {
-                //await _cachingService.AddBikeIntoCart(bikeCart);
                 var success = await _cartService.AddItem(bikeCartDto);
                 if (!success)
                 {

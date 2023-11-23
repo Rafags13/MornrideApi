@@ -41,6 +41,11 @@ namespace MornrideApi.Application.Services
 
         }
 
+        public async Task AddCurrentBikesIntoCart(IEnumerable<BikeCart> bikes)
+        {
+            await _bikeCart.InsertAsync(bikes);
+        }
+
         public async Task<IEnumerable<BikeCart?>> GetAllItems()
         {
             return await _bikeCart.ToListAsync();

@@ -1,4 +1,5 @@
 ﻿using MornrideApi.Domain.Entities.Dto;
+using MornrideApi.Domain.Entities.RedisModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace MornrideApi.Application.Interfaces
 {
     public interface ICartService
     {
-        public Task<IEnumerable<BikeCartDto>> GetAllCartItems();
+        public Task<IEnumerable<BikeCart?>> GetAllCartItems();
         public Task<bool> AddItem(BikeCartDto bikeCartDto);
     }
 }
