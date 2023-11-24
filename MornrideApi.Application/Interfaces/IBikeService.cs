@@ -8,5 +8,7 @@ namespace MornrideApi.Application.Interfaces
         public IEnumerable<HomeBikeDto> GetAll();
         public Task<bool> AddBike(CreateBikeDto bikeDto);
         public BikeDetailsDto GetBikeDetails(int bikeId);
+        public IEnumerable<string?> GetAvaliableBikeNames();
+        public IEnumerable<HomeBikeDto?> GetBikesByName(string title);
     }
 }

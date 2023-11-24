@@ -81,5 +81,35 @@ namespace MornrideApi.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("Names")]
+        public IActionResult GetBikeNames()
+        {
+            try
+            {
+                var bikeNames = _bikeService.GetAvaliableBikeNames();
+
+                return Ok(bikeNames);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("ByName/{title}")]
+        public IActionResult GetByName(string title)
+        {
+            try
+            {
+                var bikesByName = _bikeService.GetBikesByName(title);
+
+                return Ok(bikesByName);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

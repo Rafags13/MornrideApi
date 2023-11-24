@@ -124,5 +124,49 @@ namespace MornrideApi.Application.Services
 
             return bikes;
         }
+
+        public IEnumerable<string?> GetAvaliableBikeNames()
+        {
+            var bikeNames = _unitOfWork.GetRepository<Bike>().GetPagedList().Items.Select(x => x.Title);
+
+            if (!(bikeNames.Any()))
+            {
+                throw new Exception("Nenhuma bike foi encontrada");
+            }
+
+            return bikeNames;
+        }
+
+        public IEnumerable<HomeBikeDto?> GetBikesByName(string title)
+        {
+            var bikes =
+                _unitOfWork.GetRepository<Bike>()
+                .GetPagedList(
+                    predicate: x => x.Title.Contains(title),
+                    include: x => x
+                        .Include(bike => bike.BikeCategories)
+                            .ThenInclude(category => category.Category)
+                        .Include(bikeImage => bikeImage.BikeImages)
+                            .ThenInclude(image => image.Image)
+                        )
+                .Items
+                .Select(x => new HomeBikeDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Price = x.Price,
+                    Stock = x.Stock,
+                    AvaliableColors = x.AvaliableColors,
+                    CategoryNames = x.BikeCategories.Select(x => x.Category.Name),
+                    ImageDiplayBikeUrl = x.BikeImages.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FullBike).Image.Url ?? ""
+                });
+
+            if (!bikes.Any())
+            {
+                throw new Exception("Não existe nenhuma bike com esse nome.");
+            }
+
+            return bikes;
+        }
     }
 }
