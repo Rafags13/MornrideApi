@@ -80,5 +80,20 @@ namespace MornrideApi.WebApi.Controllers
             }
         }
 
+        [HttpGet("ByIds")]
+        public async Task<IActionResult> GetBikesByIds([FromQuery] int[] ids)
+        {
+            try
+            {
+                var bikes = await _cartService.GetBikesByIds(ids);
+
+                return Ok(bikes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok("");
+        }
     }
 }

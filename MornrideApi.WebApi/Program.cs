@@ -16,7 +16,7 @@ builder.Services.AddDbContext<DataContext>(option =>
     option.UseSqlServer(connectionString);
 });
 
-const bool USING_REDIS_SERVICE = false;
+const bool USING_REDIS_SERVICE = true;
 
 if (USING_REDIS_SERVICE)
 {

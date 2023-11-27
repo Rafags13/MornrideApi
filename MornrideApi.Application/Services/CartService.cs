@@ -116,5 +116,10 @@ namespace MornrideApi.Application.Services
 
             return bikeDto;
         }
+
+        public Task<IEnumerable<BikeCartDto>> GetBikesByIds(int[] id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
