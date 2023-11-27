@@ -117,9 +117,30 @@ namespace MornrideApi.Application.Services
             return bikeDto;
         }
 
-        public Task<IEnumerable<BikeCartDto>> GetBikesByIds(int[] id)
+        public IEnumerable<BikeCart> GetBikesByIds(int[] id)
         {
-            throw new NotImplementedException();
+            var bikes = _unitOfWork.GetRepository<Cart>()
+                .GetPagedList(
+                    predicate: x => id.Contains(x.BikeId),
+                    include: x => x.Include(bike => bike.CurrentBike).ThenInclude(images => images.BikeImages).ThenInclude(bikeImages => bikeImages.Image)
+                    )
+                    .Items
+                    .Select(x => new BikeCart
+                    {
+                        Id = x.BikeId,
+                        Title = x.CurrentBike?.Title ?? "",
+                        Amount = x.Amount,
+                         AvaliableColors = x.CurrentBike?.AvaliableColors.ToArray() ?? Array.Empty<string>(),
+                        Price = x.CurrentBike.Price,
+                        ImageUrl = x.CurrentBike.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FullBike)?.Image?.Url ?? ""
+                    });
+
+            if (!bikes.Any())
+            {
+                throw new Exception("Não foi possível carregar as bikes solicitadas.");
+            }
+
+            return bikes;
         }
     }
 }

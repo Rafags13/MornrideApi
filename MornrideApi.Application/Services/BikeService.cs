@@ -4,6 +4,7 @@ using MornrideApi.Application.Interfaces;
 using MornrideApi.Domain.Entities.Dto;
 using MornrideApi.Domain.Entities.Enums;
 using MornrideApi.Domain.Entities.Model;
+using MornrideApi.Domain.Entities.RedisModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -167,6 +168,33 @@ namespace MornrideApi.Application.Services
             }
 
             return bikes;
+        }
+
+        public BikeCart BuyNow(int bikeId, int amount)
+        {
+            var currentBike = 
+                _unitOfWork.GetRepository<Bike>()
+                .GetFirstOrDefault(
+                    predicate: x => x.Id == bikeId,
+                    include: x => x.Include(x => x.BikeImages).ThenInclude(images => images.Image)
+                    );
+
+            if(currentBike == null)
+            {
+                throw new Exception("Não foi possível encontrar a bike solicitada. Tente novamente, mais tarde.");
+            }
+
+            var bikeNow = new BikeCart
+            {
+                Id = bikeId,
+                Amount = amount,
+                Price = currentBike.Price,
+                Title = currentBike.Title,
+                AvaliableColors = currentBike?.AvaliableColors.ToArray() ?? Array.Empty<string>(),
+                ImageUrl = currentBike?.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FullBike)?.Image?.Url ?? "",
+            };
+
+            return bikeNow;
         }
     }
 }

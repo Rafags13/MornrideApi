@@ -111,5 +111,20 @@ namespace MornrideApi.WebApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpGet("BuyNow")]
+        public IActionResult GetBikeInformationsToBuy([FromQuery] int bikeId, int amount)
+        {
+            try
+            {
+                var bike = _bikeService.BuyNow(bikeId, amount);
+
+                return Ok(bike);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

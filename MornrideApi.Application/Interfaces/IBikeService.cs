@@ -1,4 +1,5 @@
 ﻿using MornrideApi.Domain.Entities.Dto;
+using MornrideApi.Domain.Entities.RedisModels;
 
 namespace MornrideApi.Application.Interfaces
 {
@@ -10,5 +11,6 @@ namespace MornrideApi.Application.Interfaces
         public BikeDetailsDto GetBikeDetails(int bikeId);
         public IEnumerable<string?> GetAvaliableBikeNames();
         public IEnumerable<HomeBikeDto?> GetBikesByName(string title);
+        public BikeCart BuyNow(int bikeId, int amount);
     }
 }

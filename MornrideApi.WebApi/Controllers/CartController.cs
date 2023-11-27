@@ -81,11 +81,11 @@ namespace MornrideApi.WebApi.Controllers
         }
 
         [HttpGet("ByIds")]
-        public async Task<IActionResult> GetBikesByIds([FromQuery] int[] ids)
+        public IActionResult GetBikesByIds([FromQuery] int[] ids)
         {
             try
             {
-                var bikes = await _cartService.GetBikesByIds(ids);
+                var bikes = _cartService.GetBikesByIds(ids);
 
                 return Ok(bikes);
             }
@@ -93,7 +93,6 @@ namespace MornrideApi.WebApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            return Ok("");
         }
     }
 }
