@@ -28,5 +28,21 @@ namespace MornrideApi.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("/Profile")]
+
+        public IActionResult GetProfileInformations()
+        {
+            try
+            {
+                var userInformations = _userService.GetGetProfileInformations();
+
+                return Ok(userInformations);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

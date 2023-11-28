@@ -19,6 +19,12 @@ namespace MornrideApi.Application.Services
         {
             _unitOfWork = unitOfWork;
         }
+
+        public UserProfileInformations GetGetProfileInformations()
+        {
+            throw new NotImplementedException();
+        }
+
         public HomeUserInformations GetHomeInformations()
         {
             var banners =

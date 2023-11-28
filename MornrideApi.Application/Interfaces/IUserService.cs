@@ -10,5 +10,7 @@ namespace MornrideApi.Application.Interfaces
     public interface IUserService
     {
         public HomeUserInformations GetHomeInformations();
+
+        public UserProfileInformations GetGetProfileInformations();
     }
 }
