@@ -48,7 +48,10 @@ namespace MornrideApi.Application.Services
                     Stock = x.Stock,
                     AvaliableColors = x.AvaliableColors,
                     CategoryNames = x.BikeCategories.Select(y => y.Category.Name),
-                    ImageDiplayBikeUrl = x.BikeImages.FirstOrDefault(y => y.ImagePosition == PositionOfBikeImage.FullBike).Image.Url ?? ""
+                    ImagesFromBikeByColor = 
+                    x.BikeImages
+                        .Where(x => x.ImagePosition == PositionOfBikeImage.FullBike)
+                        .Select(image => new BikeImageByColorDto { HexColor = image.HexColor, ImageUrl = image?.Image?.Url ?? ""})
                 });
 
             if (allBikes == null || !allBikes.Any())
@@ -87,7 +90,11 @@ namespace MornrideApi.Application.Services
                 Description = bikeSearched.Description,
                 Categories = bikeSearched!.BikeCategories!.Select(x => x.Category)!.Select(names => names.Name),
                 AvaliableColors = bikeSearched?.AvaliableColors ?? Enumerable.Empty<string>(),
-                Images = bikeSearched.BikeImages.Select(x => new BikeImagesProfileDto { ImageUrl = x.Image.Url, Position = x.ImagePosition})
+                Images = bikeSearched.BikeImages
+                    .GroupBy(x => x.HexColor)
+                    .Select(x => new BikeImagesByColorDto {
+                        HexColor = x.Key, BikeImages = x.Where(y => y.HexColor == x.Key).Select(images => new BikeImagesProfileDto { Position = images.ImagePosition, ImageUrl = images.Image.Url})
+                        })
             };
 
             return bikeInformations;
@@ -115,7 +122,9 @@ namespace MornrideApi.Application.Services
                     Stock = x.Stock,
                     AvaliableColors = x.AvaliableColors,
                     CategoryNames = x.BikeCategories?.Select(y => y.Category.Name),
-                    ImageDiplayBikeUrl = x.BikeImages?.FirstOrDefault(predicate: bikeImage => bikeImage.ImagePosition == PositionOfBikeImage.FullBike)?.Image?.Url ?? ""
+                    ImagesFromBikeByColor = x.BikeImages
+                        .Where(x => x.ImagePosition == PositionOfBikeImage.FullBike)
+                        .Select(image => new BikeImageByColorDto { HexColor = image.HexColor, ImageUrl = image?.Image?.Url ?? "" })
                 });
 
             if(bikes == null || !bikes.Any())
@@ -159,7 +168,9 @@ namespace MornrideApi.Application.Services
                     Stock = x.Stock,
                     AvaliableColors = x.AvaliableColors,
                     CategoryNames = x.BikeCategories.Select(x => x.Category.Name),
-                    ImageDiplayBikeUrl = x.BikeImages.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FullBike).Image.Url ?? ""
+                    ImagesFromBikeByColor = x.BikeImages
+                        .Where(x => x.ImagePosition == PositionOfBikeImage.FullBike)
+                        .Select(image => new BikeImageByColorDto { HexColor = image.HexColor, ImageUrl = image?.Image?.Url ?? "" })
                 });
 
             if (!bikes.Any())

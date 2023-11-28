@@ -50,7 +50,9 @@ namespace MornrideApi.Application.Services
                 .Select(x => new HomeBikeDto {
                     Id = x.Id, Title = x.Title,
                     AvaliableColors = x.AvaliableColors,
-                    ImageDiplayBikeUrl = x.BikeImages?.FirstOrDefault(predicate: x => x.ImagePosition == PositionOfBikeImage.FullBike)?.Image?.Url ?? "",
+                    ImagesFromBikeByColor = x.BikeImages
+                        .Where(x => x.ImagePosition == PositionOfBikeImage.FullBike)
+                        .Select(image => new BikeImageByColorDto { HexColor = image.HexColor, ImageUrl = image?.Image?.Url ?? "" }),
                     CategoryNames = x.BikeCategories?
                         .Select(b => b.Category!.Name),
                     Price = x.Price,

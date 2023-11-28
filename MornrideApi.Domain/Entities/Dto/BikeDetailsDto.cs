@@ -9,7 +9,7 @@ namespace MornrideApi.Domain.Entities.Dto
 {
     public class BikeDetailsDto
     {
-        public IEnumerable<BikeImagesProfileDto> Images { get; set; } = Enumerable.Empty<BikeImagesProfileDto>();
+        public IEnumerable<BikeImagesByColorDto> Images { get; set; } = Enumerable.Empty<BikeImagesByColorDto>();
         public string Title { get; set; } = string.Empty;
         public float Price { get; set; }
         public int Stock { get; set; }
