@@ -21,7 +21,7 @@ namespace MornrideApi.Application.Services
 
         public async Task<bool> CreateBikeImage(CreateBikeImageDto bikeImageDto)
         {
-            var newBikeImage = new BikeImage { HexColor = bikeImageDto.HexColor, BikeId = bikeImageDto.BikeId, ImageId = bikeImageDto.ImageId };
+            var newBikeImage = new BikeImage { HexColor = bikeImageDto.HexColor, BikeId = bikeImageDto.BikeId, ImageId = bikeImageDto.ImageId, ImagePosition = bikeImageDto.ImagePosition };
 
             _unitOfWork.GetRepository<BikeImage>().Insert(newBikeImage);
 
