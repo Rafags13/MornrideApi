@@ -11,6 +11,6 @@ namespace MornrideApi.Application.Interfaces
     {
         public HomeUserInformations GetHomeInformations();
 
-        public UserProfileInformations GetGetProfileInformations();
+        public UserProfileInformations GetProfileInformations();
     }
 }

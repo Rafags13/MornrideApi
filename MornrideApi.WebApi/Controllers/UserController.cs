@@ -29,13 +29,13 @@ namespace MornrideApi.WebApi.Controllers
             }
         }
 
-        [HttpGet("/Profile")]
+        [HttpGet("Profile")]
 
         public IActionResult GetProfileInformations()
         {
             try
             {
-                var userInformations = _userService.GetGetProfileInformations();
+                var userInformations = _userService.GetProfileInformations();
 
                 return Ok(userInformations);
             }
