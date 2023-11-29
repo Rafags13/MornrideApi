@@ -16,14 +16,10 @@ builder.Services.AddDbContext<DataContext>(option =>
     option.UseSqlServer(connectionString);
 });
 
-const bool USING_REDIS_SERVICE = false;
+string redisConnectionString = builder.Configuration["REDIS_CONNECTION_STRING"];
+builder.Services.AddSingleton(new RedisConnectionProvider(redisConnectionString));
+builder.Services.AddHostedService<IndexCreationService>();
 
-if (USING_REDIS_SERVICE)
-{
-    string redisConnectionString = builder.Configuration["REDIS_CONNECTION_STRING"];
-    builder.Services.AddSingleton(new RedisConnectionProvider(redisConnectionString));
-    builder.Services.AddHostedService<IndexCreationService>();
-}
 
 // Add services to the container.
 
@@ -34,11 +30,8 @@ builder.Services.AddScoped<IBikeImageService, BikeImageService>();
 builder.Services.AddScoped<IBikeCategoryService, BikeCategoryService>();
 builder.Services.AddScoped<IBannerImageService, BannerImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
-if (USING_REDIS_SERVICE)
-{
-    builder.Services.AddScoped<ICachingService, CachingService>();
-    builder.Services.AddScoped<ICartService, CartService>();
-}
+builder.Services.AddScoped<ICachingService, CachingService>();
+builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddUnitOfWork<DataContext>();
 
 
